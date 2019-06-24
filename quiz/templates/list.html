@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Minimal Django File Upload Example</title>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <!-- List of uploaded documents -->
+        {% if documents %}
+            <ul>
+                {% for document in documents %}
+                    <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No documents.</p>
+        {% endif %}
+
+        <!-- Upload form. Note enctype attribute! -->
+        <form name = "form" id = "your_form_id" action="{% url "list" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                 <input type = "text" width=50px name="uu"/>
+            <p>{{ form.non_field_errors }}</p>
+
+            <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+
+            <p>
+                {{ form.docfile.errors }}
+                {{ form.docfile }}
+            </p>
+
+            <p><input type="submit" value="Upload"/></p>
+        </form>
+
+
+    </body>
+
+<script type='text/javascript'>
+
+    $(document).ready(function(){
+    $('form').on('submit', function(e){
+        e.preventDefault();
+        alert("hee");
+        alert($('form').get(0));
+        var data = new FormData($('form').get(0));
+        var token = '{{csrf_token}}';
+         var form = $('#your_form_id');
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: $('form').attr('action'),
+            method: "POST",
+            data: data,
+            success: function(data){alert("hello");},
+            error: function(data){  alert("he");},
+            processData: false,
+            contentType: false,
+        });
+    });
+});
+/*
+     $(document).ready(function() {
+         var form = $('#your_form_id');
+       form.submit(function() { // catch the form's submit event
+            alert("hello");
+            $.ajax({ // create an AJAX call...
+                data: form.serialize(), // get the form data
+                type: form.attr('method'), // GET or POST
+                url: form.attr('action'), // the file to call
+                success: function(response) { // on success..
+                   alert("Hello");
+                }
+            });
+            return false;
+        });
+
+})*/
+
+</script>
+
+</html>

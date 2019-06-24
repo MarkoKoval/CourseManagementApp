@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit course content</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    body {
+    background-color: #ededed;
+ /*   background-image: url(/wp-content/uploads/2018/01/icons-blue6.jpg);*/
+    background-position: left top;
+    background-size: auto;
+    background-repeat: repeat;
+    background-attachment: scroll;
+}
+.tasks{
+	width: 100%;
+	max-width: 45rem;
+	padding: 1em;
+	margin: 1em auto;
+	overflow: auto;
+	background-color: white;
+	box-shadow: 0px 0.25rem 1rem rgba(0,0,0,0.25);
+	border: 1px solid #d2d1d1;
+}
+.tasks__list {
+	clear: both;
+}
+.tasks__item {
+	margin-bottom: 0.5em;
+	position: relative;
+
+}
+.tasks__item__toggle {
+	cursor: pointer;
+	width: 100%;
+	text-align: left;
+	padding: 0.85em 2.25em 0.85em 1em;
+	background-color: rgba(0,0,0,0.05);
+	border: 1px solid rgba(0,0,0,0.1);
+}
+.tasks__item__toggle:hover {
+	background-color: rgba(0,0,0,0.1);
+	border-color: rgba(0,0,0,0.15);
+}
+.tasks__item__toggle--completed {
+	text-decoration: line-through;
+	background-color: rgba(0,128,0,0.15);
+	border-color: rgba(0,128,0,0.2);
+}
+.tasks__item__toggle--completed:hover {
+	background-color: rgba(0,128,0,0.25);
+	border-color: rgba(0,128,0,0.3);
+}
+.tasks__item__remove {
+	position: absolute;
+	height: 100%;
+	top: 50%;
+	right: 0;
+  	-webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.tasks__item__add {
+	position: absolute;
+	height: 100%;
+	top: 50%;
+	right: 40px;
+  	-webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.tasks__item__show {
+	position: absolute;
+	height: 100%;
+	top: 50%;
+	right: 150px;
+  	-webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.tasks__item__create{
+    position: absolute;
+	height: 100%;
+	top: 50%;
+	right: 230px;
+  	-webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+#ee{
+	position: absolute;
+	height: 100%;
+	top: 50%;
+	right: 150px;
+  	-webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.tasks__item__remove i {
+  	vertical-align: middle;
+}
+#buttons{
+      position: relative;
+    margin: 10px 10px 10px 10px;
+    left: 80px;
+}
+</style>
+</head>
+<body>
+   <p> Автор {{ course.course_creator.name }} -  Назва{{course.name }} </p>
+
+
+
+<!--<div class="collapse" id="collapseExample">
+  <div class="card card-body" id = "few">
+      <p id = "description_text"> </p>
+  </div>
+</div> -->
+
+
+<div id="app">
+	<task-list ref = "call_me" :tasks="tasks"></task-list>
+</div>
+
+<template id="task-list">
+
+
+    <!--<div class="row vertical-offset-100">
+    	<div class="col-md-4 col-md-offset-4">
+    		<div class="panel panel-default">
+
+			  	<div class="panel-body"> -->
+
+	<section class="tasks">
+		<div class="tasks__new input-group">
+			<input type="text" placeholder="Назва уроку" class="input-group-field" v-model="newTask" @keyup.enter ="addTask">
+			<span class="input-group-button">
+				<button class="button" @click="addTask">
+					<i class="fa fa-plus">Додати</i>
+				</button>
+			</span>
+
+		</div>
+         <textarea rows="4" type="text" placeholder="Опис уроку" v-model="description" @keyup.enter ="addTask"> </textarea>
+		<ul class="tasks__list no-bullet">
+            <task-item  v-for="(task, index) in tasks"  @create_test="create_test_(index)"  @edit = "editTask(index)"  @add_lesson_content = "add_lesson_content_(index)"   @remove="removeTask(index)" @complete="completeTask(task)"  :task="task" :key ="task.id"></task-item>
+		</ul>
+	</section>
+              <!--         </div>
+			</div>
+		</div>
+	</div> -->
+
+</template>
+
+<template id="task-item">
+
+    <li class="tasks__item">
+
+      	<button :class="className">
+            <p > {% verbatim %}{{ task.title  }}{% endverbatim %}  </p>
+      	</button>
+
+   <!--     <p>
+  <button id = "ee" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" @click="$emit('show')">
+    Опис
+  </button>
+</p>-->
+<!-- <p> Автор course.course_creator.name -  Назва course.name  </p> -->
+       <button class="tasks__item__create button alert" @click="$emit('create_test')">
+               <!-- <a><font color="FF00CC">Переглянути</font> </a> -->
+           <i >Тести</i>
+      	</button>
+
+        <button class="tasks__item__show button danger" @click="$emit('add_lesson_content')">
+               <!-- <a><font color="FF00CC">Переглянути</font> </a> -->
+           <i >Ресурси </i>
+      	</button>
+
+        <button class="tasks__item__add button success" @click="$emit('edit')">
+        	<i >Редагувати </i>
+      	</button>
+
+        <button class="tasks__item__remove button alert" @click="$emit('remove')">
+        	<i class="fa fa-times"></i>
+      	</button>
+
+    </li>
+</template>
+
+<div class="container">
+
+  <!-- Trigger the modal with a button -->
+
+
+  <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">    haha </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Lesson Name:</label>
+            <input type="text" class="form-control" id="Lesson_name" >
+              <input id="prodId" type="hidden">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Description</label>
+            <textarea class="form-control" id="message-text"  ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="save()" >Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<!--<button onclick="f()">hhh</button>-->
+
+<script>
+function ff() {
+    alert("gggee")
+}
+ function f(title,description,index){
+     document.getElementById("message-text").value = description;
+       document.getElementById("Lesson_name").value = title;
+        document.getElementById("prodId").value = index;
+         $("#exampleModal").modal();
+
+    }
+function save(){
+       app.$refs.call_me.e();
+    // alert( document.getElementById("message-text").value +" " + document.getElementById("Lesson_name").value + " "+document.getElementById("prodId").value );
+         app.$refs.call_me.save(document.getElementById("message-text").value , document.getElementById("Lesson_name").value,document.getElementById("prodId").value);
+ }
+ function r(){
+      alert(document.getElementById("few").value)
+      document.getElementById("few").value = "Опис Уроку: " ;
+      alert(document.getElementById("few").value)
+ }
+Vue.component('task-list', {
+  template: '#task-list',
+  props: {
+    tasks: [],
+      temp_description: "",
+      temp_title: ""
+  },
+  data() {
+    return {
+      newTask: '',
+        description: ''
+    };
+  },
+  created: function() {
+        $.ajax({
+    url: '',
+    type: 'get', // This is the default though, you don't actually need to always mention it
+    data: {
+          'title':  "",
+
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+            success: function(data) {
+        // alert(JSON.stringify(data));
+       this.tasks = data.lessons;
+    }.bind(this),
+    failure: function(data) {
+        alert('Got an error dude');
+          alert(JSON.stringify(data));
+
+    }
+})
+
+
+  } ,
+  methods: {
+      hello(){
+       alert("hi");
+      },
+
+      add(){
+          alert("gggfwe")
+          this.tasks.push({
+          title: "haha",
+            description: "hih",
+          //completed: false
+        });
+          alert("gggfwe")
+      },
+    addTask() {
+      if (this.newTask) {
+        this.tasks.push({
+          title: this.newTask,
+            description: this.description,
+          //completed: false
+        });
+       // alert( this.newTask)
+
+
+        $.ajax({
+    url: '',
+    type: 'get', // This is the default though, you don't actually need to always mention it
+    data: {
+          'title':  this.newTask,
+            'description': this.description,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+            success: function(data) {
+        //alert(JSON.stringify(data));
+       this.tasks =   data.lessons;
+        location.reload();
+    }.bind(this),
+    failure: function(data) {
+        alert('Got an error dude');
+          alert(JSON.stringify(data))
+    }
+});
+
+
+
+        alert( '{{course.name }}');
+
+        this.newTask = '';
+        this.description = '';
+      }
+    },
+    completeTask(task) {
+     // task.completed = ! task.completed;
+    },
+    removeTask(index) {
+        //  alert(JSON.stringify(this.tasks));
+         // alert(index)
+        //  alert(JSON.stringify(this.tasks[index]));
+        $.ajax({
+    url: '',
+    type: 'get', // This is the default though, you don't actually need to always mention it
+    data: {
+          'title':  this.tasks[index]["title"],
+            'description': this.tasks[index]["description"],
+            'remove': 'true',
+        'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+            success: function(data) {
+        //alert(JSON.stringify(data));
+       // this.tasks = data.lessons;
+         location.reload();
+    }.bind(this),
+    failure: function(data) {
+        alert('Got an error dude');
+          alert(JSON.stringify(data))
+    }
+
+});
+
+    },
+      show_description(index){
+        r();
+
+
+      },
+    editTask(index) {
+
+          this.temp_title = this.tasks[index].title;
+          this.temp_description = this.tasks[index].description;
+            alert(this.temp_title +" "+this.temp_description );
+
+f(this.tasks[index].title ,this.tasks[index].description,index);
+
+
+    },
+      create_test_(index){
+             alert(JSON.stringify(this.tasks[index]));
+            var lesson = this.tasks[index].title;
+            alert(lesson);
+         window.location = "{% url 'create_course_tests_for_lesson' 1234 123 %}".replace(/1234/,"{{course.name }}").replace(/123/, lesson);
+      },
+      e(){
+        alert("hello");
+      },
+
+      show(index){
+
+      },
+    add_lesson_content_(index){
+
+          var title = this.tasks[index].title;
+          var description = this.tasks[index].description;
+          alert(course_creator_name + " "+ course_name + " "+title+" "+description);
+
+        //  var url = " url 'edit_lesson_content'   course_name course_name course_name     %}";
+           // alert(url)
+           // var id = $(this).attr('id');
+
+            // Construct the full URL with "id"
+          document.location.href = course_name +"/lesson/"+ title + "/created-by/" + course_creator_name;
+    },
+    save(description,header,index){
+          //alert("ggg")
+          //alert(description +" "+header);
+          //alert(this.temp_title +" "+ this.temp_description);
+          $.ajax({
+            url: '',
+            type: 'get', // This is the default though, you don't actually need to always mention it
+            data: {
+                'title':  this.temp_title,
+                'description': this.temp_description,
+                'new_title': header,
+                'new_description': description,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+                // alert("success");
+                this.tasks =   data.lessons;
+                 location.reload();
+            }.bind(this),
+            failure: function(data) {
+                alert('Got an error dude');
+                alert(JSON.stringify(data))
+            }
+            //   alert("hsag "+description + " "+header+" "+index);
+            /*  this.tasks[index] = {
+                title: header,
+                  description: description
+
+              };
+
+
+
+              this.tasks.push({  title: header,
+                  description: description})
+              this.tasks.splice(this.tasks.length-1,1);*/
+          })
+    }
+  }
+});
+Vue.component('task-item', {
+  template: '#task-item',
+  props: ['task'],
+  computed: {
+    className() {
+      let classes = ['tasks__item__toggle'];
+      if (this.task.completed) {
+        classes.push('tasks__item__toggle--completed');
+      }
+      return classes.join(' ');
+    }
+  }
+});
+
+
+    var app = new Vue({
+
+        el: '#app',
+        data: {
+            tasks: []
+        }
+
+
+    });
+
+var course_creator_name= "{{course.course_creator.name }}";
+var course_name = "{{ course.name }}"
+/*alert(context_var);
+ $.ajax({
+            type: "POST",
+        url: 'update/course-content-of/'+'course.name ',
+
+        data: {
+          'title': title,
+
+        },
+             contentType: "application/json;charset=utf-8",
+        dataType: 'json',
+        success: function (data) {
+            alert('zbs');
+          if (data.is_taken) {
+            alert("A user with this username already exists.");
+          }
+        },
+        error:function (err) {
+            alert("error");
+        }
+      });
+});*/
+</script>
+
+<style>
+
+
+</style>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    	<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+		<script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+		ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script></head>
+    <style>
+        @import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+        html,body {
+          width:100%;
+          height:100%;
+        }
+        .myChart {
+          width:100%;
+          height:100%;
+          min-height:250px;
+        }
+        .zc-ref {
+          display: none;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id = "diagrams">
+
+</div>
+      <!-- <div class='myChart' id = "myChart55"></div> -->
+<script>
+   $(document).ready(function() {
+       // var d1 = document.getElementById('diagrams');
+      //  d1.insertAdjacentHTML('afterend', '<div class="myChart" id = "myChart55"></div>');
+       // cr();
+       var user = "{{   user.name  }}";
+         var data = JSON.parse('{{ js | escapejs }}');
+      //  alert(data["hello"]);
+        var points = 0;
+        var total_point = 0;
+        var counter = 1
+        var series = []
+        var colors = ["red", "green","yellow", "blue", "orange"]
+        for(var quiz in data)
+        {
+            series = [];
+            points = 0;
+            for(i = 0 ; i < data[quiz].length;i++)
+            {
+                points += data[quiz][i]["result"];
+                //alert(data[quiz][i]["result"]);
+                series.push({
+                    values: [data[quiz][i]["result"]],
+                    text: (i+1)+" "+data[quiz][i]["question"]+"\n-"+data[quiz][i]["answer"]+"\nбали ("+[data[quiz][i]["result"]]+"/5"+")",
+                    backgroundColor: colors[i],
+                })
+
+            }
+            document.getElementById('diagrams').insertAdjacentHTML('beforebegin', '<div class="myChart" id = "myChart'+counter+'"></div>');
+            create__(data[quiz].length*5,points,quiz,user,series,counter,'myChart'+counter);
+            //create_diagram(counter,5*data[quiz].length,points);
+            counter++;
+        }
+   })
+
+
+    function create__(all_points,my_points,quiz,user,series,counter,myChart)
+   {
+        var myConfig = {
+      type: "pie",
+      plot: {
+        borderColor: "#2B313B",
+        borderWidth: 5,
+        // slice: 90,
+        valueBox: {
+          placement: 'out',
+          text: '%t\n%npv%',
+          fontFamily: "Open Sans"
+        },
+        tooltip: {
+          fontSize: '18',
+          fontFamily: "Open Sans",
+          padding: "5 10",
+          text: "%npv%"
+        },
+        animation: {
+          effect: 2,
+          method: 5,
+          speed: 900,
+          sequence: 1,
+          delay: 3000
+        }
+      },
+      source: {
+        text: '',
+        fontColor: "#8e99a9",
+        fontFamily: "Open Sans"
+      },
+      title: {
+        fontColor: "#8e99a9",
+        text: 'Результати користувача '+user,
+        align: "left",
+        offsetX: 10,
+        fontFamily: "Open Sans",
+        fontSize: 25
+      },
+      subtitle: {
+        offsetX: 10,
+        offsetY: 10,
+        fontColor: "#8e99a9",
+        fontFamily: "Open Sans",
+        fontSize: "16",
+        text: "Опитування '"+quiz+"'"+"\n  бали ("+ my_points+"/"+all_points+")",
+        align: "left"
+      },
+      plotarea: {
+        margin: "20 0 0 0"
+      },
+      series: series
+    };
+
+    zingchart.render({
+      id: myChart,
+      data: myConfig,
+      height: '100%',
+      width: '100%'
+    });
+   }
+
+</script>
+</body>
+</html>

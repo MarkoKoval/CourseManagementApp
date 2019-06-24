@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Course Lessons</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <style>
+       .badge {
+  padding: 1px 9px 2px;
+  font-size: 12.025px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+.badge:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.badge-error {
+  background-color: #b94a48;
+}
+.badge-error:hover {
+  background-color: #953b39;
+}
+.badge-warning {
+  background-color: #f89406;
+}
+.badge-warning:hover {
+  background-color: #c67605;
+}
+.badge-success {
+  background-color: #468847;
+}
+.badge-success:hover {
+  background-color: #356635;
+}
+.badge-info {
+  background-color: #3a87ad;
+}
+.badge-info:hover {
+  background-color: #2d6987;
+}
+.badge-inverse {
+  background-color: #333333;
+}
+.badge-inverse:hover {
+  background-color: #1a1a1a;
+}
+    </style>
+</head>
+<body>
+
+
+
+{% if lessons %}
+
+
+                {% for lesson in lessons %}
+
+                     <div class="container">
+<div class="col-md-12">
+    <h1>{{ lesson.name }}</h1>
+
+    <p> {{lesson.description  }}</p>
+
+    <div>
+<span class="badge">{{ lesson.created_on }}</span>
+
+<span class="badge badge-error"> <a href="{% url 'show_lesson_files' coursename lesson.name %}" > <font color="FFFFFF">Show Files  </font></a></span>
+        <span class="badge badge-info"> <a href="{% url 'pass_lesson_test' coursename lesson.name %}" > <font color="FFFFFF"> Pass test </font></a></span>
+        <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span>
+    </div>
+    <hr>
+</div>
+</div>
+
+
+
+
+</div>
+                {% endfor %}
+
+        {% else %}
+            <p>No courses for subscription</p>
+        {% endif %}
+
+
+
+</body>
+</html>

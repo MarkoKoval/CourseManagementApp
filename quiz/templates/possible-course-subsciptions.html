@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Possible Course Subscriptions</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+</head>
+<body>
+{% if courses %}
+
+
+                {% for course in courses %}
+
+                     <div class="container">
+<div class="col-md-12">
+    <h1>{{ course.name }}</h1>
+
+    <p> {{course.description  }}</p>
+
+    <div>
+<span class="badge">{{ course.created_on }}</span>
+<span class="badge"> {{ course.course_creator.name }}</span>
+<span class="label label-danger"> <a href={% url 'create_course_subscription' username course.name %} > Subscribe </a></span>
+        <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span>
+    </div>
+    <hr>
+</div>
+</div>
+
+
+
+
+</div>
+                {% endfor %}
+
+        {% else %}
+            <p>No courses for subscription</p>
+        {% endif %}
+</body>
+</html>

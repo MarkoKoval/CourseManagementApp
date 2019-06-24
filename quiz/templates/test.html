@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<h3> Statistic of {{ user.name }} </h3>
+    {% for quiz in quizes %}
+        <p> {{ quiz.title }}</p>
+        <br>
+        {% for question in quiz.questions.all %}
+            <p> {{ question.title }}</p>
+            <br>
+            {% for variant_result in question.variant_result_pair.all %}
+                <p>{{ variant_result.choice }} - {{ variant_result.score  }} <p>
+                <br>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     {% load static %}
+  <script src="{% static 'quiz_handler.js' %}"></script>
+    <script src  = "static/quiz_handler.js"> </script>
+    		<link type='text/css' rel='stylesheet' href='static/style.css'/>
+            <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    	    <script type='text/javascript' src='static/jsquiz.js'></script>
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open Sans"/>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<!--<button id = "aa" onclick="displayNext()">Hello</button> -->
+    <br>
+<p>Користувач {{user.name}}    Роль {{ user.user_status }} <p>
+    <p id = "my_email"><p>
+    <button type="button" class="btn btn-primary" onclick="addEmail()">Add Email to Send and Get Notifications</button>
+<!-- <select id = "selector" class="ui search dropdown" onChange="javascript:doSomething(this.value);" >
+  <option value="" selected style="display:none">Обери опитування</option>
+
+</select> -->
+
+<a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "statistic/{{ user.name }}">Статистика</a>
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "possible-course-subscriptions/{{ user.name }}">Можливі курси для підписки</a>
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "course-subscriptions/{{ user.name }}">Мої підписки на курси</a>
+
+    {% if  user.user_status  == 'lecturer' %}
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "created-courses/{{ user.name }}">Створені курси</a>
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "create/course/by/{{ user.name }}">Створити курс</a>
+    {% endif %}
+    <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "{% url "enter" %}">   Вихід</a>
+<br>
+<div id='container'>
+			<div id='title'>
+				<h3>Оцінювання навичок програміста за допомогою моделі навичок братів Дрейфус</h3>
+			</div>
+   			<br/>
+  			<div id='quiz'></div>
+    		<div class='button' id='next'><a href='#'>Наступне</a></div>
+    		<div class='button' id='prev'><a href='#'>Попереднє</a></div>
+    		<div class='button' id='start'> <a href='#'>Рестарт</a></div>
+           <!-- <div class='button' id='show_result'> <a href='statistic/{{user.name}}'>Мої результати</a></div> -->
+            <a id = "show_result" href='statistic/{{user.name}}'>
+                <div>
+                    Мої результати
+                </div>
+            </a>
+
+
+    		<!-- <button class='' id='next'>Next</a></button>
+    		<button class='' id='prev'>Prev</a></button>
+    		<button class='' id='start'> Start Over</a></button> -->
+    	</div>
+
+
+<div class="container">
+
+  <!-- Trigger the modal with a button -->
+
+
+  <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> <br>  Email to get and send notifications </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Enter Email</label>
+             <input type="email"  placeholder="enter email..." class="form-control" id="user_email" minlength="7" maxlength="30"  required>
+          </div>
+
+            <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="save()" >Save</button>
+      </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+       document.getElementById("my_email").innerHTML =  "Емейл: " +"{{ user.user_email }}";
+                $('#show_result').hide();
+        t = '{{csrf_token}}';
+        username = '{{user.name}}'
+        var arr = ["Новачок", "Твердий початківець", "Компетентний", "Досвідчений", "Експерт"]
+        $('.ui.search.dropdown').dropdown();
+               for (i = 0; i < arr.length; i++)
+                {
+               // $('#selector').append( '<option value="aaa'+i+'">'+'Option '+i+'</option>' );
+                    $('#selector').append( '<option value='+arr[i]+'>'+arr[i]+'</option>' );
+                }
+    })
+
+     function doSomething(value) {
+
+            displayNext(value)
+        }
+
+ function addEmail(){
+
+     var email = document.getElementById("my_email").innerHTML ;
+
+     document.getElementById("user_email").value = email === "Емейл: None" ? "": email ;
+         $("#exampleModal").modal();
+    }
+function save() {
+        //validate email
+   document.getElementById("my_email").innerHTML =  "Емейл: " + document.getElementById("user_email").value;
+
+    $.ajax({
+           url: '',
+           type: 'get', // This is the default though, you don't actually need to always mention it
+           data: {
+               "user_email":document.getElementById("user_email").value,
+               "user_name": '{{user.name}}',
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+           },
+           success: function (data) {
+               alert(JSON.stringify(data.email))
+             //  alert(JSON.stringify(data.courses));
+              // this.courses = data.courses;
+              // alert(JSON.stringify(data));
+              // this.tasks = data.lessons;
+           }.bind(this),
+           failure: function (data) {
+               alert('Got an error dude');
+               //alert(JSON.stringify(data));
+
+           }
+       });
+}
+</script>
+
+    <script type='text/javascript' src='static/jsquiz.js'></script>
+<!--<button id = "ada" onclick="displayNext()">Helaalo</button> -->
+</body>
+</html>
