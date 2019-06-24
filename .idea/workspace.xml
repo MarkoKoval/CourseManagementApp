@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="d3c9e906-cd7f-498d-b326-f9cf042bb55c" name="Default Changelist" comment="" />
+=======
+    <list default="true" id="d3c9e906-cd7f-498d-b326-f9cf042bb55c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/quiz/templates/quiz.html" beforeDir="false" afterPath="$PROJECT_DIR$/quiz/templates/quiz.html" afterDir="false" />
+    </list>
+>>>>>>> master
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,8 +260,16 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/quiz/templates/quiz.html">
               <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
                 <state relative-caret-position="259">
                   <caret line="162" column="10" lean-forward="true" selection-start-line="162" selection-start-column="10" selection-end-line="162" selection-end-column="10" />
+=======
+                <state relative-caret-position="-659">
+                  <caret line="112" column="9" lean-forward="true" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+                  <folding>
+                    <element signature="n#style#0;n#option#0;n#select#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
+>>>>>>> master
                 </state>
               </provider>
             </entry>
@@ -330,7 +344,6 @@
         <option value="$PROJECT_DIR$/quiz/templates/login.html" />
         <option value="$PROJECT_DIR$/quiz/templates/create_course_resourses.html" />
         <option value="$PROJECT_DIR$/quiz/templates/create_tests_for_lesson.html" />
-        <option value="$PROJECT_DIR$/quiz/templates/quiz.html" />
         <option value="$PROJECT_DIR$/quiz/templates/create-course.html" />
         <option value="$PROJECT_DIR$/quiz/models.py" />
         <option value="$PROJECT_DIR$/quiz/urls.py" />
@@ -342,6 +355,7 @@
         <option value="$PROJECT_DIR$/quiz/templates/possible-course-subsciptions.html" />
         <option value="$PROJECT_DIR$/quiz/templates/show_course_lessons.html" />
         <option value="$PROJECT_DIR$/quiz/templates/show_lesson_files_.html" />
+        <option value="$PROJECT_DIR$/quiz/templates/quiz.html" />
       </list>
     </option>
   </component>
@@ -512,15 +526,22 @@
       <workItem from="1552293041680" duration="2427000" />
       <workItem from="1552306783084" duration="1689000" />
       <workItem from="1560243841354" duration="80179000" />
-      <workItem from="1560539902491" duration="191801000" />
+      <workItem from="1560539902491" duration="192442000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="380111000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="388" y="23" width="1152" height="874" extended-state="0" />
+=======
+    <option name="totallyTimeSpent" value="380748000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="10" y="91" width="1520" height="874" extended-state="1" />
+>>>>>>> master
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2591575" />
@@ -859,6 +880,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/quiz/templates/quiz.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="259">
@@ -866,6 +888,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> master
     <entry file="file://$PROJECT_DIR$/quiz/templates/my-created-courses.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1872">
@@ -909,6 +933,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="67" column="23" lean-forward="true" selection-start-line="67" selection-start-column="23" selection-end-line="67" selection-end-column="23" />
+<<<<<<< HEAD
+=======
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quiz/templates/quiz.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-659">
+          <caret line="112" column="9" lean-forward="true" selection-start-line="112" selection-start-column="9" selection-end-line="112" selection-end-column="9" />
+          <folding>
+            <element signature="n#style#0;n#option#0;n#select#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+>>>>>>> master
         </state>
       </provider>
     </entry>
