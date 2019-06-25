@@ -73,6 +73,8 @@
 .control-group.success .combobox-container .caret {
   border-top-color: #468847;
 }
+
+
         </style>
 </head>
 <body>
@@ -84,7 +86,7 @@
     	<div class="col-md-4 col-md-offset-4">
     		<div class="panel panel-default">
 			  	<div class="panel-heading">
-			    	<h3 class="panel-title">Вхід в систему</h3>
+			    	<h3 class="panel-title">Enter the system</h3>
 			 	</div>
 			  	<div class="panel-body">
 			    	<form accept-charset="UTF-8" name = "form" method="post" action="{% url "enter-quiz-app" %}" enctype="multipart/form-data">
@@ -95,8 +97,8 @@
 
     <div class="form-group">
       <select class="form-control" name = "status">
-        <option value="student">Учень</option>
-        <option value="lecturer">Викладач</option>
+        <option value="student">Student</option>
+        <option value="lecturer">Lecturer</option>
 
       </select>
     </div>
@@ -108,13 +110,13 @@
 
 
 			    	  	<div class="form-group">
-			    		    <input class="form-control" placeholder="логін" name="nickname" type="text" minlength="4" maxlength="30" required >
+			    		    <input class="form-control" placeholder="nickname" name="nickname" type="text" minlength="4" maxlength="30" required >
 			    		</div>
 			    		<div class="form-group">
-			    			<input class="form-control" placeholder="пароль" name="password" type="password" value="" minlength="4" maxlength="30" required>
+			    			<input class="form-control" placeholder="password" name="password" type="password" value="" minlength="4" maxlength="30" required>
 			    		</div>
 
-			    		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Вхід">
+			    		<input class="btn btn-lg btn-dark btn-block" type="submit" value="Enter" >
 			    	    <br>
 			    	    <!--<div class="g-signin2" data-onsuccess="onSignIn"></div> -->
                        <!-- <a href="#" onclick="signOut()">Sign out</a> -->

@@ -85,7 +85,7 @@
 	position: absolute;
 	height: 100%;
 	top: 50%;
-	right: 150px;
+	right: 85px;
   	-webkit-transform: translateY(-50%);
           transform: translateY(-50%);
 }
@@ -93,7 +93,7 @@
     position: absolute;
 	height: 100%;
 	top: 50%;
-	right: 230px;
+	right: 210px;
   	-webkit-transform: translateY(-50%);
           transform: translateY(-50%);
 }
@@ -118,9 +118,9 @@
 </style>
 </head>
 <body>
-   <p> Автор {{ course.course_creator.name }} -  Назва{{course.name }} </p>
+ <!--  <p> Автор { course.course_creator.name }} -  Назва{course.name }} </p> -->
 
-
+<br>
 
 <!--<div class="collapse" id="collapseExample">
   <div class="card card-body" id = "few">
@@ -144,15 +144,15 @@
 
 	<section class="tasks">
 		<div class="tasks__new input-group">
-			<input type="text" placeholder="Назва уроку" class="input-group-field" v-model="newTask" @keyup.enter ="addTask">
+			<input type="text" placeholder="Lesson name" class="input-group-field" v-model="newTask" @keyup.enter ="addTask">
 			<span class="input-group-button">
 				<button class="button" @click="addTask">
-					<i class="fa fa-plus">Додати</i>
+					<i class="fa fa-plus">Add</i>
 				</button>
 			</span>
 
 		</div>
-         <textarea rows="4" type="text" placeholder="Опис уроку" v-model="description" @keyup.enter ="addTask"> </textarea>
+         <textarea rows="4" type="text" placeholder="Lesson description" v-model="description" @keyup.enter ="addTask"> </textarea>
 		<ul class="tasks__list no-bullet">
             <task-item  v-for="(task, index) in tasks"  @create_test="create_test_(index)"  @edit = "editTask(index)"  @add_lesson_content = "add_lesson_content_(index)"   @remove="removeTask(index)" @complete="completeTask(task)"  :task="task" :key ="task.id"></task-item>
 		</ul>
@@ -180,16 +180,16 @@
 <!-- <p> Автор course.course_creator.name -  Назва course.name  </p> -->
        <button class="tasks__item__create button alert" @click="$emit('create_test')">
                <!-- <a><font color="FF00CC">Переглянути</font> </a> -->
-           <i >Тести</i>
+           <i >Tests</i>
       	</button>
 
         <button class="tasks__item__show button danger" @click="$emit('add_lesson_content')">
                <!-- <a><font color="FF00CC">Переглянути</font> </a> -->
-           <i >Ресурси </i>
+           <i >Additional files</i>
       	</button>
 
         <button class="tasks__item__add button success" @click="$emit('edit')">
-        	<i >Редагувати </i>
+        	<i >Edit</i>
       	</button>
 
         <button class="tasks__item__remove button alert" @click="$emit('remove')">

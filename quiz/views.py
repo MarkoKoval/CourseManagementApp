@@ -287,7 +287,9 @@ def get_my_created_courses(request,username):
         for i in course:
             save.append({"name":i.name,"description":i.description,
                          "author":username,
-                         "course_id":i.id})
+                         "course_id":i.id,
+                         "date": i.created_on.strftime("%Y-%m-%d %H:%M:%S")
+                         })
         return JsonResponse({'courses': save})
     if request.method == 'GET' and len(request.GET) == 2:
 
@@ -300,7 +302,9 @@ def get_my_created_courses(request,username):
         for i in course:
             save.append({"name":i.name,"description":i.description,
                          "author":username,
-                         "course_id":i.id})
+                         "course_id":i.id,
+                         "date":i.created_on.strftime("%Y-%m-%d %H:%M:%S")
+                         })
         return JsonResponse({'courses': save})
     print("get_my_created_courses")
     i = Course.objects.filter(course_creator__name = username)

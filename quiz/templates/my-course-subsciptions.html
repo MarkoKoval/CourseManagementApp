@@ -71,11 +71,11 @@
     <p> {{course.description  }}</p>
 
     <div>
-<span class="badge badge-light">{{  course.created_on}}</span>
-<span class="badge badge-success"> {{ course.course_creator.name }}</span>
+<span class="badge badge-light">Create date: {{  course.created_on}}</span>
+<span class="badge badge-success">Creator: {{ course.course_creator.name }}</span>
         <span class="badge badge-error "> <a href={% url 'delete_course_subscription' course.name username  %} ><font color="000000"> unsubscribe </font></a> </span>
-         <span class="badge badge-info">        <a href={% url 'show_course_lessons' course.name  %}  > <font color="FFFFFF">переглянути уроки</font> </a> </span>
-        <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span>
+         <span class="badge badge-info">        <a href={% url 'show_course_lessons' course.name  %}  > <font color="FFFFFF">show lessons</font> </a> </span>
+       <!-- <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span> -->
     </div>
     <hr>
 </div>

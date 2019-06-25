@@ -14,7 +14,12 @@
     #forma{
         margin: 20px 20px 20px 20px;
     }
+    .invisible {
+    position: absolute;
+    left: -9999px;
+}
     </style>
+
 <body>
     {%  if created %}
         <p>The Course with the same name was already created</p>
@@ -26,12 +31,12 @@
     <input name = "course_name" type="text" class="form-control" id="exampleInput" aria-describedby="emailHelp" placeholder="Enter name" minlength="1" maxlength="100" required>
     <small id="emailHelp" class="form-text text-muted">Must by unique within all course names.</small>
   </div>
-  <div class="form-group">
+  <!--<div class="form-group" invisible >
     <label for="exampleInputPassword1">Search tags</label>
     <input type="text"  id="exampleInputPassword1" name = "tags" placeholder="Enter tags" >
       <small id="emailHelp" class="form-text text-muted">the tags that help to search the course.</small>
 
-  </div>
+  </div> -->
 
 
 
@@ -42,7 +47,7 @@
 </div>
 
 
-  <button type="submit" class="btn btn-primary">Create Course</button>
+  <button type="submit" class="btn btn-lg btn-dark btn-block">Create Course</button>
 
 </form>
 

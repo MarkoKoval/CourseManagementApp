@@ -21,10 +21,10 @@
     <p> {{course.description  }}</p>
 
     <div>
-<span class="badge">{{ course.created_on }}</span>
-<span class="badge"> {{ course.course_creator.name }}</span>
+<span class="badge">Creation date: {{ course.created_on }}</span>
+<span class="badge">Creator: {{ course.course_creator.name }}</span>
 <span class="label label-danger"> <a href={% url 'create_course_subscription' username course.name %} > Subscribe </a></span>
-        <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span>
+    <!--    <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span> -->
     </div>
     <hr>
 </div>

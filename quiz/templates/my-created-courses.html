@@ -99,12 +99,12 @@
     <p> {{course.description  }}</p>
 
     <div>
-<span class="badge">дата</span>
-<span class="badge"> {{  course.author }}</span>
+<span class="badge">Creation date: {{course.date }}</span>
+
          <span class="badge badge-info"> <a  v-on:click="edit_course(course.name)" > <font color="FFFFFF"> edit course lessons</font></a></span>
         <span class="badge badge-error"> <a  v-on:click="delete_course(course.name)" > <font color="FFFFFF"> delete course </font></a></span>
 
-        <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span>
+     <!--   <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span> -->
     </div>
     <hr>
 </div>
