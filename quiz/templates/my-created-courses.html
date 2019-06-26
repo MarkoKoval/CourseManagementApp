@@ -104,6 +104,10 @@
          <span class="badge badge-info"> <a  v-on:click="edit_course(course.name)" > <font color="FFFFFF"> edit course lessons</font></a></span>
         <span class="badge badge-error"> <a  v-on:click="delete_course(course.name)" > <font color="FFFFFF"> delete course </font></a></span>
 
+        <div class="pull-right" v-for="tag in course.tags ">
+            <span class="label label-default">{{ tag }}</span>
+        </div>
+
      <!--   <div class="pull-right"><span class="label label-default">alice</span> <span class="label label-primary">story</span> <span class="label label-success">blog</span> <span class="label label-info">personal</span> <span class="label label-warning">Warning</span> -->
     </div>
     <hr>

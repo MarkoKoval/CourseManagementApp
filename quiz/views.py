@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Quiz,Question,VariantResult,User,PassedQuiz,QuestionAnswerResult,Course,Lesson
+from .models import SearchTags,Quiz,Question,VariantResult,User,PassedQuiz,QuestionAnswerResult,Course,Lesson
 # Create your views here.
 from .quizes_data import *
 import os
@@ -256,9 +256,50 @@ def get_possible_course_subscriptions(request,username):
         print(3)
         it3 = it2
 
+    if request.GET:
+        course =  it3.all()
+        print(username)
+        save = []
+        for i in course:
+            tags = [t.name for t in i.search_tags.all()]
+            save.append({"name": i.name, "description": i.description,
+                         "author": username,
+                         "course_id": i.id,
+                         "date": i.created_on.strftime("%Y-%m-%d %H:%M:%S"),
+                         "tags": tags
+                         })
+        return JsonResponse({'courses': save})
+
     return render(request, "possible-course-subsciptions.html",{"courses":it3.all(), "username":username})
 
 def get_my_course_subscriptions(request,username):
+    if request.GET and len(request.GET) == 3:
+
+        rem = User.objects.get(name=username).course_subscriptions.get(name=request.GET["coursename"])
+        User.objects.get(name=username).course_subscriptions.remove(rem)
+        it = User.objects.get(name=username).course_subscriptions.all()
+        save = []
+        for i in it:
+            tags = [t.name for t in i.search_tags.all()]
+            save.append({"name": i.name, "description": i.description,
+                         "author": username,
+                         "course_id": i.id,
+                         "date": i.created_on.strftime("%Y-%m-%d %H:%M:%S"),
+                         "tags": tags
+                         })
+        return JsonResponse({'courses': save})
+    if request.GET:
+        it = User.objects.get(name=username).course_subscriptions.all()
+        save = []
+        for i in it:
+            tags = [t.name for t in i.search_tags.all()]
+            save.append({"name": i.name, "description": i.description,
+                         "author": username,
+                         "course_id": i.id,
+                         "date": i.created_on.strftime("%Y-%m-%d %H:%M:%S"),
+                         "tags": tags
+                         })
+        return JsonResponse({'courses': save})
     it = User.objects.get(name=username).course_subscriptions
 
     return  render(request, "my-course-subsciptions.html",{"course_subsciptions":it.all(), "username":username})
@@ -267,7 +308,8 @@ def create_course_subscription(request,username,coursename):
     print(username +" "+coursename)
     User.objects.get(name=username).course_subscriptions.add(Course.objects.get(name = coursename))
 
-    return redirect('/possible-course-subscriptions/'+username) #render(request, "possible-course-subsciptions.html",{})
+    return HttpResponseRedirect(reverse('get_my_course_subscriptions',args=(username,)))
+#JsonResponse({}) #redirect('/possible-course-subscriptions/'+username) #render(request, "possible-course-subsciptions.html",{})
 
 def delete_course_subscription(request,coursename, username):
     print(Course.objects.all().count())
@@ -285,10 +327,13 @@ def get_my_created_courses(request,username):
         print(username)
         save = []
         for i in course:
+
+            tags = [t.name for t in i.search_tags.all()]
             save.append({"name":i.name,"description":i.description,
                          "author":username,
                          "course_id":i.id,
-                         "date": i.created_on.strftime("%Y-%m-%d %H:%M:%S")
+                         "date": i.created_on.strftime("%Y-%m-%d %H:%M:%S"),
+                         "tags": tags
                          })
         return JsonResponse({'courses': save})
     if request.method == 'GET' and len(request.GET) == 2:
@@ -300,10 +345,12 @@ def get_my_created_courses(request,username):
         print(username)
         save = []
         for i in course:
+            tags = [t.name for t in i.search_tags.all()]
             save.append({"name":i.name,"description":i.description,
                          "author":username,
                          "course_id":i.id,
-                         "date":i.created_on.strftime("%Y-%m-%d %H:%M:%S")
+                         "date":i.created_on.strftime("%Y-%m-%d %H:%M:%S"),
+                         "tags": tags
                          })
         return JsonResponse({'courses': save})
     print("get_my_created_courses")
@@ -317,10 +364,19 @@ def create_course(request,username):
         print(request.POST)
         s = request.POST["course_name"]
         description = request.POST["description"]
-        print(s)
-        print(request.POST)
+        cat = request.POST["tags"].split(",")
+        categories = [i for i in cat if i]
+
+        print(type(categories))
+        print(categories)
+
         try:
             course, created  =  Course.objects.get_or_create(name = s, course_creator = User.objects.get(name=username), description = description)
+            if len(categories) > 0:
+                for tag in categories:
+                    categorie, created = SearchTags.objects.get_or_create(name=tag)
+
+                    course.search_tags.add(categorie)
         except Exception as e:
             return render(request, "create-course.html", {"user": username,
                                                           "created": True})
