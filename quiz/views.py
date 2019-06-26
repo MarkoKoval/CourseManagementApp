@@ -17,13 +17,13 @@ from django.http.response import JsonResponse
 def enter(request):
 
     print("hello")
-    print(request.session.get("semail"))
+   # print(request.session.get("semail"))
     return render(request, "login.html", {"user": str(request.session.get("semail"))})
 
 
 def load_quiz(request):
     print(request.POST)
-    print(request.session.get("num"))
+   # print(request.session.get("num"))
     return render(request, "quiz.html")
 
 
@@ -61,12 +61,12 @@ def enter_quiz_app(request):
 
                 temp = ["hihi"]
                # return render(request, "login.html")
-                request.session['semail'] =[ 'hrthrthrtirfan.sssit@gmail.com']
+              #  request.session['semail'] =[ 'hrthrthrtirfan.sssit@gmail.com']
                 return HttpResponseRedirect(reverse('enter'))
 
         else:
 
-            request.session['semail'] = ['irfan.sssit@gmail.comhthrthrthr']
+         #   request.session['semail'] = ['irfan.sssit@gmail.comhthrthrthr']
             return HttpResponseRedirect(reverse('enter'))
 
             #return render(request, "login.html",  {"user":user})
