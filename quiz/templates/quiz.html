@@ -148,20 +148,23 @@
     </li>
     {% endif %}
      <li class="nav-item">
+    <a class="nav-link" href = "{% url "about" %}">   About</a>
+        </li>
+     <li class="nav-item">
     <a class="nav-link" href = "{% url "enter" %}">   Exit</a>
         </li>
     </ul>
   </div>
 </nav>
 <!--<button id = "aa" onclick="displayNext()">Hello</button> -->
-    <br>
-<!--<p>Користувач user.name    Роль { user.user_status }} <p>
-   <p id = "my_email"><p>
+ <!--   <br>
+
+
     <button type="button" class="btn btn-primary" onclick="addEmail()">Add Email to Send and Get Notifications</button> -->
 <!-- <select id = "selector" class="ui search dropdown" onChange="javascript:doSomething(this.value);" >
   <option value="" selected style="display:none">Обери опитування</option>
 
-</select> -->
+</select>-->
 
 <!--<a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "statistic/{{ user.name }}">Статистика</a>
     <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href = "possible-course-subscriptions/{{ user.name }}">Можливі курси для підписки</a>
@@ -196,12 +199,12 @@
     	</div> -->
 
 
-<div class="container">
+<!--<div class="container">
 
-  <!-- Trigger the modal with a button -->
+   Trigger the modal with a button
 
 
-  <!-- Modal -->
+  Modal
     <div  class="modal fade" id="exampleModal" tabindex="-1" role="dialog"  aria-hidden="true">
   <div class="modal-dialog" role="document">
 
@@ -217,7 +220,7 @@
         <form id = "newModalForm">
 
           <div class="form-group">
-          <!--  <label for="message-text" class="col-form-label">Enter Email</label>-->
+          -  <label for="message-text" class="col-form-label">Enter Email</label>-
              <input type="email"  placeholder="enter email..." class="form-control" id="user_email" minlength="7" maxlength="30"  required>
           </div>
 
@@ -226,7 +229,7 @@
         <button type="submit" class="btn btn-primary" id = "butt">Save</button>
       </div>
 
-        </form>
+        </form>-->
       </div>
 
 
@@ -265,7 +268,7 @@
                 <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h4 class="modal-title"><i class='glyphicon glyphicon-envelope text-info'></i> Add E-mail for notifications</h4>
+                            <h4 class="modal-title"><i class='glyphicon glyphicon-envelope text-info'></i> Add E-mail</h4>
                             </div>
                         <br>
                             <div class="modal-body">
@@ -273,7 +276,7 @@
                                 <div class="col-sm-offset-4" style="text-align: center;">
                                     <div class='form-group' >
                                         <div class='input-group col-xs-8' data-validate="email">
-                                            <input type="text" class="form-control " name="validate-email" id="validate-email" placeholder="Email Address" required>
+                                            <input onkeyup="search(this)" type="text" class="form-control " name="validate-email" id="validate-email" placeholder="Email Address" required>
 
                                         </div>
                                     </div>
@@ -281,7 +284,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer" style="text-align: center; ">
-                                <button type="button" class="btn btn-info" disabled id="btnConfirmEmail" data-dismiss="modal">Submit</button>
+                                <button onclick="save()" type="button" class="btn btn-info" disabled id="btnConfirmEmail" data-dismiss="modal">Submit</button>
                                 <button type="reset" class="btn btn-default"  data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
@@ -297,49 +300,44 @@ function getConfirm() {
     var email = document.getElementById("my_email").innerHTML ;
     //    alert(email)
      document.getElementById("validate-email").value = email === "None" ? "": email ;
+     $("#btnConfirmEmail").attr("disabled",true);
     $("#modalConfirmEmail").modal("show");
 }
+/*$("#btnConfirmEmail").on("keyup",function () {
 
-$('#btnConfirmEmail').click(function() {
-    save();
+    alert(document.getElementById("#btnConfirmEmail").innerHTML);
+});*/
+function search(t) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(t.value)) {
+            $("#btnConfirmEmail").attr("disabled",false);
+        //alert(t.value);
+    }
+    else{
+          $("#btnConfirmEmail").attr("disabled",true);
+    }
+
  /*
     To do Something
  */
-});
+}
+
+/*$("#validate-email").on("keyup",function(){
+  //alert("The text has been changed.");
+     var email = document.getElementById("my_email").innerHTML ;
+
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+         if (re.test(email)){
+            alert("ffewf");
+             $("#btnConfirmEmail").attr("disabled", true);
+
+        }
+         else{
+             alert("ffad");
+         }
+ // modal.modal('hide');
+});*/
 
 $(document).ready(function() {
-    $('.input-group input[required]').on('keyup change', function() {
-        var $form = $(this).closest('form'),
-            $group = $(this).closest('.input-group'),
-			$addon = $group.find('.input-group-addon'),
-			$icon = $addon.find('span'),
-			state = false;
-
-    	if (!$group.data('validate')) {
-			state = $(this).val() ? true : false;
-		}else if ($group.data('validate') == "email") {
-			state = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($(this).val())
-		}
-
-		if (state) {
-				$addon.removeClass('danger');
-				$addon.addClass('success');
-				$icon.attr('class', 'glyphicon glyphicon-ok');
-		}else{
-				$addon.removeClass('success');
-				$addon.addClass('danger');
-				$icon.attr('class', 'glyphicon glyphicon-remove');
-		}
-
-        if ($form.find('.input-group-addon.danger').length == 0) {
-            $form.find('[type="button"]').prop('disabled', false);
-        }else{
-            $form.find('[type="button"]').prop('disabled', true);
-        }
-	});
-
-    $('.input-group input[required], .input-group textarea[required], .input-group select[required]').trigger('change');
-
 
 });
 
@@ -410,7 +408,7 @@ function save() {
 <!--ffewfweffeewfffff-->
 </script>
 
-    <!--<script type='text/javascript' src='static/jsquiz.js'></script> -->
+    <script type='text/javascript' src='static/jsquiz.js'></script>
 <!--<button id = "ada" onclick="displayNext()">Helaalo</button> -->
 </body>
 </html>

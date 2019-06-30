@@ -36,8 +36,20 @@
        // var d1 = document.getElementById('diagrams');
       //  d1.insertAdjacentHTML('afterend', '<div class="myChart" id = "myChart55"></div>');
        // cr();
-       var user = "{{   user.name  }}";
-         var data = JSON.parse('{{ js | escapejs }}');
+       var user = "Marko";
+         var data =  {
+             "first": [
+                 {"question":"Rivne",
+                                         "answer":"Russia",
+                                        "result":0},
+                 {"question":"Lutzk",
+                                         "answer":"Poland",
+                                        "result":0},
+                 {"question":"Lviv",
+                                         "answer":"Ukraine",
+                                        "result":0}
+             ]
+         };//JSON.parse('{ js | escapejs }}');
       //  alert(data["hello"]);
         var points = 0;
         var total_point = 0;

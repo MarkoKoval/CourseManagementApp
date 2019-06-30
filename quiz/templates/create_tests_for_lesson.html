@@ -1,10 +1,537 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>CreateTests</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 </head>
+<style>
+
+    header {
+        height: 65px;
+    }
+
+    #heads {
+
+        height: 65px;
+        position: fixed;
+        width: 100%;
+    }
+
+    article {
+
+        height: auto;
+        margin: 0;
+    }
+
+    body {
+        background-color: whitesmoke;
+        margin: 0;
+        padding: 0;
+    }
+
+    #courseName {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 35px;
+        color: YellowGreen;
+        margin: 0px 0px 0px 80px;
+        padding-top: 10px;
+        float: left;
+    }
+
+    #course {
+        float: right;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 35px;
+        color: YellowGreen;
+        margin-right: 200px;
+        margin-top: 24px;
+    }
+
+    #footerinfo {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        list-style-type: none;
+        margin: 0px 0px 0px 100px;
+        padding: 20px 0px 0px 0px;
+    }
+
+    #listinfo {
+        display: inline;
+    }
+
+    #info {
+        text-decoration: none;
+        color: YellowGreen;
+    }
+
+    #rights {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        color: YellowGreen;
+        margin-top: 10px;
+        margin-left: 100px;
+    }
+
+    .dropbtn {
+        background-color: DarkOliveGreen;
+        color: YellowGreen;
+        padding: 16px;
+        font-size: 30px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdownMenue {
+        position: relative;
+        display: inline-block;
+        margin-right: 50px;
+        margin-top: -1px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: WhiteSmoke;
+        min-width: 160px;
+        box-shadow: gray;
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: Gray;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: DarkOliveGreen;
+        color: YellowGreen;
+    }
+
+    .dropdownMenue:hover .dropdown-content {
+        display: block;
+    }
+
+
+    .dropdownMenue:hover .dropbtn {
+        background-color: DarkOliveGreen;
+    }
+
+    #lessons {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 30%;
+        background-color: whitesmoke;
+        position: fixed;
+        max-height: 73%;
+        overflow: auto;
+        border-style: solid;
+        border-width: 3px;
+        border-color: Gainsboro;
+    }
+
+    #namelesson a {
+        display: block;
+        font-family: Arial, Helvetica, sans-serif;
+        color: gray;
+        padding: 8px 16px;
+        text-decoration: none;
+        font-size: 20px;
+    }
+
+
+    #namelesson a:hover:not(.active) {
+        background-color: DarkOliveGreen;
+        color: YellowGreen;
+    }
+
+    #addTestBtn {
+        font-weight: 800;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        background-color: slategray;
+        outline: none;
+        height: 40px;
+        width: 240px;
+    }
+
+    #fullTestArea {
+
+    }
+</style>
+<script>
+    var myTest = null;
+    var questionJSON = {
+        test_name: "",
+        test_author: "",
+        test_questions: []
+    }
+    function initQuizFromServer(){
+
+        $.ajax({
+           url: '',
+            async: false,
+           type: 'get', // This is the default though, you don't actually need to always mention it
+           data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+           },
+           success: function (data) {
+             //  alert(data.passed);
+               var finalData = data.test_in_json.replace(/\\/g, "");
+             //;  alert( finalData)
+               localStorage.setItem("data",finalData)
+
+              // return JSON.parse(finalData)
+               // alert(JSON.stringify(myTest))
+           }.bind(this),
+           failure: function (data) {
+               alert('Got an error dude');
+           }
+       });
+
+      /* myTest = {
+        test_name: "About me",
+        test_author: "Borys Lahno",
+        test_questions: [
+            {
+                question: "What is my name?",
+                answers: [
+                    {1: "Borys"},
+                    {2: "Tom"},
+                    {3: "Nick"},
+                    {4: "Mark"}
+                ],
+                correct_answer: "1"
+            },
+            {
+                question: "How old I am?",
+                answers: [
+                    {1: "15"},
+                    {2: "22"},
+                    {3: "20"},
+                    {4: "25"},
+                    {5: "17"}
+                ],
+                correct_answer: "3"
+            },
+            {
+                question: "What do I like to do?",
+                answers: [
+                    {1: "Play football"},
+                    {2: "Play computer games"},
+                    {3: "Play the Guitar"},
+                ],
+                correct_answer: "2"
+            }
+        ]
+        }*/
+    }
+    $(document).ready(function () {
+        myTest = initQuizFromServer();
+        var testArea = document.getElementsByName('tests');
+        var prototypeTextArea = testArea[0].cloneNode(true);
+        myTest = JSON.parse(localStorage.getItem('data'));
+        document.getElementById('testName').value = myTest.test_name;
+        for (var i = 0; i < myTest.test_questions.length; ++i) {
+            if (i > 1) {
+                var newTestArea = prototypeTextArea.cloneNode(true);
+                newTestArea.id = "question" + (testArea.length + 1);
+                var correctAnswer = newTestArea.getElementsByTagName("input");
+                for (var r = 0; r < correctAnswer.length; ++r) {
+                    correctAnswer[r].name = "correctAnswer" + (testArea.length + 1);
+                }
+                document.getElementById('fullTestArea').appendChild(newTestArea);
+
+            }
+            testArea[i].getElementsByTagName("textarea")[0].value = myTest.test_questions[i].question;
+            for (var j = 0; j < myTest.test_questions[i].answers.length; j++) {
+                if (j > 1) {
+                    var newTextArea = document.createElement("textarea");
+                    var newRadioButton = document.createElement("input");
+                    newTextArea.placeholder = "Enter answer and mark it if it is correct";
+                    newTextArea.name = "answerArea";
+                    newTextArea.style.marginTop = "0";
+                    newTextArea.style.resize = "none";
+                    newTextArea.style.width = "95%";
+                    newTextArea.style.height = "30px";
+                    newRadioButton.type = "radio";
+                    newRadioButton.value = j + 1;
+                    newRadioButton.name = "correctAnswer" + (i + 1);
+                    newRadioButton.style.cssFloat = "right";
+                    newRadioButton.style.marginTop = "13px";
+                    newRadioButton.style.marginRight = "10px";
+                    newRadioButton.style.transform = "scale(1.5)";
+                    newRadioButton.style.opacity = "0.9";
+                    newRadioButton.style.cursor = "pointer";
+                    testArea[i].appendChild(newTextArea);
+                    testArea[i].appendChild(newRadioButton);
+                }
+                switch (j) {
+                    case 0:
+                        testArea[i].getElementsByTagName("textarea")[j + 1].value = myTest.test_questions[i].answers[j]["1"];
+                        break;
+                    case 1:
+                        testArea[i].getElementsByTagName("textarea")[j + 1].value = myTest.test_questions[i].answers[j]["2"];
+                        break;
+                    case 2:
+                        testArea[i].getElementsByTagName("textarea")[j + 1].value = myTest.test_questions[i].answers[j]["3"];
+                        break;
+                    case 3:
+                        testArea[i].getElementsByTagName("textarea")[j + 1].value = myTest.test_questions[i].answers[j]["4"];
+                        break;
+                    case 4:
+                        testArea[i].getElementsByTagName("textarea")[j + 1].value = myTest.test_questions[i].answers[j]["5"];
+                        break;
+                }
+            }
+            testArea[i].getElementsByTagName("input")[myTest.test_questions[i].correct_answer - 1].checked = true;
+        }
+    });
+
+
+    function сheckNumberOfAnswer(thisElement) {
+        var parent = thisElement.parentNode;
+        var numberQuestion = document.getElementById(parent.parentNode.id);
+        var numberOfTextArea = numberQuestion.getElementsByTagName("textarea");
+        var numberOfAnswer = thisElement.options[thisElement.selectedIndex].text;
+        var correctAnswerList = numberQuestion.getElementsByTagName("input");
+        var testArea = document.getElementsByName('tests');
+        var correctAnswerName;
+        for (var i = 0; i < testArea.length; ++i) {
+            if (testArea[i].id == parent.parentNode.id) {
+                correctAnswerName = i + 1;
+            }
+        }
+        if (numberOfAnswer < numberOfTextArea.length - 1) {
+            for (var i = numberOfTextArea.length - 1; i > numberOfAnswer; i--) {
+
+                numberQuestion.removeChild(numberOfTextArea[i]);
+                numberQuestion.removeChild(correctAnswerList[i-2]);
+            }
+        } else if (numberOfAnswer > numberOfTextArea.length - 1) {
+            var stop = numberOfAnswer - (numberOfTextArea.length - 1);
+            for (var i = 0; i < stop; i++) {
+                var newTextArea = document.createElement("textarea");
+                var newRadioButton = document.createElement("input");
+                newTextArea.placeholder = "Enter answer and mark it if it is correct";
+                newTextArea.name = "answerArea";
+                newTextArea.style.marginTop = "0";
+                newTextArea.style.resize = "none";
+                newTextArea.style.width = "95%";
+                newTextArea.style.height = "30px";
+                newRadioButton.type = "radio";
+                newRadioButton.value = i + 3;
+                newRadioButton.name = "correctAnswer" + correctAnswerName;
+                newRadioButton.style.cssFloat = "right";
+                newRadioButton.style.marginTop = "13px";
+                newRadioButton.style.marginRight = "10px";
+                newRadioButton.style.transform = "scale(1.5)";
+                newRadioButton.style.opacity = "0.9";
+                newRadioButton.style.cursor = "pointer";
+                numberQuestion.appendChild(newTextArea);
+                numberQuestion.appendChild(newRadioButton);
+            }
+        } else {
+            return;
+        }
+    }
+
+    function createTest() {
+        var questionList = document.getElementById('numQuestionList');
+        var numberOfQuestion = questionList.options[questionList.selectedIndex].text;
+        var testArea = document.getElementsByName('tests');
+        var full = document.getElementById('fullTestArea');
+        if (numberOfQuestion < testArea.length) {
+            for (var i = testArea.length - 1; i > numberOfQuestion - 1; i--) {
+                full.removeChild(testArea[i]);
+            }
+        } else if (numberOfQuestion > testArea.length) {
+            var stop = numberOfQuestion - testArea.length;
+            for (var i = 0; i < stop; i++) {
+                var newTestArea = testArea[0].cloneNode(true);
+                newTestArea.id = "question" + (testArea.length + 1);
+                var correctAnswer = newTestArea.getElementsByTagName("input");
+
+                var alltextArea=newTestArea.getElementsByTagName("textarea");
+                //alltextArea[0].value="";
+
+                for(var j=0;j<alltextArea.length;++j){
+
+                    alltextArea[j].value="";
+                }
+
+                for (var r = 0; r < correctAnswer.length; ++r) {
+                    correctAnswer[r].name = "correctAnswer" + (testArea.length + 1);
+                }
+                full.appendChild(newTestArea);
+            }
+        } else {
+            return;
+        }
+    }
+
+    function saveTest() {
+        questionJSON.test_name = document.getElementById('testName').value;
+        var allQuestion = document.getElementsByName('tests')
+        for (var i = 0; i < allQuestion.length; ++i) {
+            var questionContent = allQuestion[i].getElementsByTagName("textarea");
+            var correctAnswer = allQuestion[i].getElementsByTagName("input");
+            questionJSON.test_questions.push({question: questionContent[0].value, answers: [], correct_answer: ""});
+            for (var j = 1; j < questionContent.length; ++j) {
+                switch (j) {
+                    case 1:
+                        questionJSON.test_questions[i].answers.push({1: questionContent[j].value});
+                        break;
+                    case 2:
+                        questionJSON.test_questions[i].answers.push({2: questionContent[j].value});
+                        break;
+                    case 3:
+                        questionJSON.test_questions[i].answers.push({3: questionContent[j].value});
+                        break;
+                    case 4:
+                        questionJSON.test_questions[i].answers.push({4: questionContent[j].value});
+                        break;
+                    case 5:
+                        questionJSON.test_questions[i].answers.push({5: questionContent[j].value});
+                        break;
+                }
+                if (correctAnswer[j - 1].checked) {
+                    questionJSON.test_questions[i].correct_answer = (j);
+                }
+            }
+        }
+        for (var i = 0; i < questionJSON.test_questions.length; ++i) {
+            // alert(questionJSON.test_questions[i].question);
+            for (var j = 0; j < questionJSON.test_questions[i].answers.length; ++j) {
+                 //   alert(questionJSON.test_questions[i].answers[j][j + 1]);
+            }
+             // alert(questionJSON.test_questions[i].correct_answer);
+        }
+        saveTestInDB(questionJSON);
+    }
+    function saveTestInDB(questionJSON){
+         $.ajax({
+           url: '',
+           type: 'get', // This is the default though, you don't actually need to always mention it
+           data: {
+               "test_in_json":JSON.stringify(questionJSON),
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+           },
+           success: function (data) {
+               window.history.back();
+               //alert(JSON.stringify(data.courses));
+              // this.courses = data.courses;
+
+           }.bind(this),
+           failure: function (data) {
+               alert('Got an error dude');
+           }
+       });
+    }
+</script>
 <body>
-<p>{{ coursename }} - {{ lessonname }}</p>
+
+
+<article>
+
+
+    <div style="width: 60%; margin: 0 auto;">
+        <div id="fullTestArea">
+            <p style="font-size: 20px; font-family: Arial, Helvetica, sans-serif;color: gray;margin-bottom: 0; margin-top: 10px;">
+                Тest name
+                <button onclick="saveTest()">Save test</button>
+            </p>
+            <input type="text" id="testName" style="width: 78%;height: 20px;margin-top: 8px;"
+                   placeholder="Enter test name and select question count">
+            <select onchange="createTest()" id="numQuestionList" style="float: right;height: 25px;margin-top: 8px;">
+                <option selected disabled>Select question count</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+            </select>
+            <div name="tests" id="question1">
+                <p style="font-size: 20px; font-family: Arial, Helvetica, sans-serif;color: gray; margin-top: 10px;margin-bottom: 0">
+                    Question</p>
+                <textarea name="question" placeholder="Enter  question"
+                          style="margin-top: 8px;resize: none;width: 100%;height: 50px;"></textarea>
+                <p style="font-size: 20px; font-family: Arial, Helvetica, sans-serif;color: gray; margin-top: 5px;margin-bottom: 0">
+                    Answers:
+                    <select onchange="сheckNumberOfAnswer(this)">
+                        <option selected disabled>Select possible answers count</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select></p>
+                <textarea name="answerArea" placeholder="Enter answer and mark it if it is correct"
+                          style="margin-top: 8px;resize: none;width: 95%;height: 30px;"></textarea>
+                <input name="correctAnswer1" type="radio" value="1" style="float: right; margin-top: 20px;margin-right: 10px;
+transform:scale(1.5);opacity:0.9;cursor:pointer;">
+                <textarea name="answerArea" placeholder="Enter answer and mark it if it is correct"
+                          style="margin-top: 0;resize: none;width: 95%;height: 30px;"></textarea>
+                <input name="correctAnswer1" type="radio" value="2" style="float: right; margin-top: 13px;margin-right: 10px;
+transform:scale(1.5);opacity:0.9;cursor:pointer;">
+            </div>
+
+            <div id="question2" name="tests">
+                <p style="font-size: 20px; font-family: Arial, Helvetica, sans-serif;color: gray; margin-top: 10px;margin-bottom: 0">
+                    Question</p>
+                <textarea name="question" placeholder="Enter test question"
+                          style="margin-top: 8px;resize: none;width: 100%;height: 50px;"></textarea>
+                <p style="font-size: 20px; font-family: Arial, Helvetica, sans-serif;color: gray; margin-top: 5px;margin-bottom: 0">
+                    Answers:
+                    <select onchange="сheckNumberOfAnswer(this)">
+                        <option selected disabled>Select answers count</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select></p>
+                <textarea name="answerArea" placeholder="Enter answer and mark it if it is correct"
+                          style="margin-top: 8px;resize: none;width: 95%;height: 30px;"></textarea>
+                <input name="correctAnswer2" type="radio" value="1" style="float: right; margin-top: 20px;margin-right: 10px;
+transform:scale(1.5);opacity:0.9;cursor:pointer;">
+                <textarea name="answerArea" placeholder="Enter answer and mark it if it is correct"
+                          style="margin-top: 0;resize: none;width: 95%;height: 30px;"></textarea>
+                <input name="correctAnswer2" type="radio" value="2" style="float: right; margin-top: 13px;margin-right: 10px;
+transform:scale(1.5);opacity:0.9;cursor:pointer;">
+            </div>
+        </div>
+    </div>
+</article>
+
+
 </body>
 </html>

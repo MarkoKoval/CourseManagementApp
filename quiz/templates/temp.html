@@ -1,16 +1,55 @@
-<!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
 
 
-<!-- Add this after vue.js -->
+    <title>Jquery Select2 - Select Box with Search Option</title>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 
 </head>
+
+
 <body>
 
 
+<div style="width:520px;margin:0px auto;margin-top:30px;height:500px;">
+
+
+
+
+  <select class="myselect" style="width:500px;" onchange="changeSelect();">
+        <option value="" disabled selected>Search course by name</option>
+  </select>
+
+
+</div>
+
+
+<script type="text/javascript">
+     $(document).ready(function() {
+         var items = ["Laravel ACL", "Laravel Angural JS Crud",
+         "Laravel CRUD","Laravel PDF", "C++",
+         "gLaravel ACL", "yLaravel Angural JS Crud",
+         "tLaravel CRUD","yLaravel PDF", "tC++"]
+         for (var i of items)
+         $(".myselect").append(new Option(i, i));
+
+     });
+      $(".myselect").select2();
+    $('.myselect').on('change', function() {
+  alert( this.value );
+  $(".myselect").select2("close");
+});
+</script>
+
+
 </body>
+
+
 </html>

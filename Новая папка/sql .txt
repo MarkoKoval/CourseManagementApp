@@ -1,0 +1,32 @@
+﻿PRAGMA foreign_keys=on;
+
+CREATE TABLE users(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name VARCHAR(150),
+surname VARCHAR(150),
+fathername VARCHAR(150),
+date VARCHAR(150),
+adress VARCHAR(150),
+group1 VARCHAR(150),
+FOREIGN KEY (group1) REFERENCES grp(namegrp));
+
+CREATE TABLE grp(
+idgrp INTEGER PRIMARY KEY AUTOINCREMENT,
+namegrp VARCHAR(150),
+lvlgrp VARCHAR(150),
+teachergrp VARCHAR(150),
+nursegrp VARCHAR(150),
+countgrp VARCHAR(150));
+
+CREATE TABLE kinderg(
+idkd INTEGER PRIMARY KEY AUTOINCREMENT,
+namekd VARCHAR(150),
+contactkd VARCHAR(150),
+headkd VARCHAR(150),
+countkd VARCHAR(150));
+
+INSERT INTO users(name,surname,fathername,date,adress,group1)
+VALUES('Вишенька','старша','Юрієвич','Іванівна','10','123');
+
+DELETE FROM users
+WHERE name='mike';

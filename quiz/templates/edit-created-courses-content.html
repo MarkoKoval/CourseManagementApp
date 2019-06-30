@@ -255,9 +255,9 @@ function save(){
          app.$refs.call_me.save(document.getElementById("message-text").value , document.getElementById("Lesson_name").value,document.getElementById("prodId").value);
  }
  function r(){
-      alert(document.getElementById("few").value)
+    //  alert(document.getElementById("few").value)
       document.getElementById("few").value = "Опис Уроку: " ;
-      alert(document.getElementById("few").value)
+    //  alert(document.getElementById("few").value)
  }
 Vue.component('task-list', {
   template: '#task-list',
@@ -287,7 +287,7 @@ Vue.component('task-list', {
     }.bind(this),
     failure: function(data) {
         alert('Got an error dude');
-          alert(JSON.stringify(data));
+       //   alert(JSON.stringify(data));
 
     }
 })
@@ -296,17 +296,17 @@ Vue.component('task-list', {
   } ,
   methods: {
       hello(){
-       alert("hi");
+      // alert("hi");
       },
 
       add(){
-          alert("gggfwe")
+        //  alert("gggfwe")
           this.tasks.push({
           title: "haha",
             description: "hih",
           //completed: false
         });
-          alert("gggfwe")
+        //  alert("gggfwe")
       },
     addTask() {
       if (this.newTask) {
@@ -390,9 +390,9 @@ f(this.tasks[index].title ,this.tasks[index].description,index);
 
     },
       create_test_(index){
-             alert(JSON.stringify(this.tasks[index]));
+            // alert(JSON.stringify(this.tasks[index]));
             var lesson = this.tasks[index].title;
-            alert(lesson);
+           // alert(lesson);
          window.location = "{% url 'create_course_tests_for_lesson' 1234 123 %}".replace(/1234/,"{{course.name }}").replace(/123/, lesson);
       },
       e(){
@@ -406,7 +406,7 @@ f(this.tasks[index].title ,this.tasks[index].description,index);
 
           var title = this.tasks[index].title;
           var description = this.tasks[index].description;
-          alert(course_creator_name + " "+ course_name + " "+title+" "+description);
+         // alert(course_creator_name + " "+ course_name + " "+title+" "+description);
 
         //  var url = " url 'edit_lesson_content'   course_name course_name course_name     %}";
            // alert(url)

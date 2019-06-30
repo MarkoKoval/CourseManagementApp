@@ -103,7 +103,7 @@
 
          <span class="badge badge-info"> <a  v-on:click="edit_course(course.name)" > <font color="FFFFFF"> edit course lessons</font></a></span>
         <span class="badge badge-error"> <a  v-on:click="delete_course(course.name)" > <font color="FFFFFF"> delete course </font></a></span>
-
+        <span class="badge badge-info">        <a  v-on:click = "showcoursechat(course.name,course.author)"  > <font color="FFFFFF">course chat</font> </a> </span>
         <div class="pull-right" v-for="tag in course.tags ">
             <span class="label label-default">{{ tag }}</span>
         </div>
@@ -128,7 +128,8 @@ var vm = new Vue({
   data: {
     courses: [
 
-    ]
+    ],
+
   },
   mounted:function(){
   //      alert("rgr");
@@ -194,6 +195,10 @@ var vm = new Vue({
         alert(name);
         window.location = "{% url 'edit_course_content' 1234 %}".replace(/1234/, name);
   },
+      showcoursechat(coursename,author){
+
+                  window.location = "{% url 'show_course_chat'  123 1234 %}".replace(/123/,coursename).replace(/1234/,author);
+    },
   delete_course(id){
 
        $.ajax({

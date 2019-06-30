@@ -1,0 +1,203 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pass test</title>
+    <link href="js-quiz.css" rel="stylesheet">
+    <script src="js-quiz-questions.js"></script>
+    <script src="js-quiz.js"></script>
+</head>
+<style>
+    #quiz-wrap {
+        font-family: arial, sans-serif;
+    }
+
+    /* Wrapper of each question */
+    #quiz-wrap .question {
+        padding: 15px;
+        margin: 10px;
+        background: #f2f2f2;
+        border: 3px solid #ccc;
+        border-radius: 10px;
+    }
+
+    /* Question */
+    #quiz-wrap h1 {
+        font-size: 22px;
+        margin: 5px 0;
+    }
+
+    /* Options */
+    #quiz-wrap label {
+        display: block;
+        width: 100%;
+        font-size: 20px;
+        margin-top: 10px;
+        color: #333;
+    }
+
+    /* Submit Button */
+    #quiz-wrap input[type=submit] {
+        background: #972121;
+        color: #fff;
+        padding: 10px;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 10px;
+        font-size: 20px;
+    }
+</style>
+<script>
+    var myTest = null;
+    function f() {
+        //get from server
+        myTest = {
+        test_name: "About me",
+        test_author: "Borys Lahno",
+        test_questions: [
+            {
+                question: "What is my name?",
+                answers: [
+                    {1: "Borys"},
+                    {2: "Tom"},
+                    {3: "Nick"},
+                    {4: "Mark"}
+                ],
+                correct_answer: "1"
+            },
+            {
+                question: "How old I am?",
+                answers: [
+                    {1: "15"},
+                    {2: "22"},
+                    {3: "20"},
+                    {4: "25"},
+                    {5: "17"}
+                ],
+                correct_answer: "3"
+            },
+            {
+                question: "What do I like to do?",
+                answers: [
+                    {1: "Play football"},
+                    {2: "Play computer games"},
+                    {3: "Play the Guitar"},
+                ],
+                correct_answer: "2"
+            },
+            {
+                question: "I have a sister?",
+                answers: [
+                    {1: "Yes"},
+                    {2: "No"},
+                ],
+                correct_answer: "1"
+            }
+        ]
+    }
+    }
+    var quiz = {
+        draw: function () {
+            f();
+            var wrapper = document.getElementById("quiz-wrap");
+
+
+            for (var i = 0; i < myTest.test_questions.length; ++i) {
+
+                var number = (i + 1);
+                var qwrap = document.createElement("div");
+                qwrap.classList.add("question");
+
+
+                var question = document.createElement("h1");
+                question.innerHTML = number + ") " + myTest.test_questions[i].question;
+                qwrap.appendChild(question);
+
+
+                for (var j = 0; j < myTest.test_questions[i].answers.length; ++j) {
+
+                    var label = document.createElement("label");
+                    qwrap.appendChild(label);
+
+
+                    var option = document.createElement("input");
+                    option.type = "radio";
+                    option.value = (j + 1);
+                    option.required = true;
+                    option.classList.add("oquiz");
+
+
+                    option.name = "quiz-" + number;
+                    label.appendChild(option);
+
+
+                    var answerOfQuestion;
+                    switch (j + 1) {
+                        case 1:
+                            answerOfQuestion = myTest.test_questions[i].answers[j]["1"];
+                            break;
+                        case 2:
+                            answerOfQuestion = myTest.test_questions[i].answers[j]["2"];
+                            break;
+                        case 3:
+                            answerOfQuestion = myTest.test_questions[i].answers[j]["3"];
+                            break;
+                        case 4:
+                            answerOfQuestion = myTest.test_questions[i].answers[j]["4"];
+                            break;
+                        case 5:
+                            answerOfQuestion = myTest.test_questions[i].answers[j]["5"];
+                            break;
+                    }
+                    var otext = document.createTextNode(answerOfQuestion);
+                    label.appendChild(otext);
+                }
+
+
+                wrapper.appendChild(qwrap);
+            }
+
+
+            var submitbutton = document.createElement("input");
+            submitbutton.type = "submit";
+            wrapper.appendChild(submitbutton);
+            wrapper.addEventListener("submit", quiz.submit);
+        },
+
+        submit: function (evt) {
+
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            var selected = document.querySelectorAll(".oquiz:checked");
+
+            var score = 0;
+            for (var index = 0; index < myTest.test_questions.length; index++) {
+                if (selected[index].value == myTest.test_questions[index].correct_answer) {
+                    score++;
+                }
+            }
+
+            var total = selected.length;
+            var percent = score / total;
+
+
+            var html = "<h1>";
+            if (percent >= 0.7) {
+                html += "WELL DONE!";
+            } else if (percent >= 0.4) {
+                html += "NOT BAD!";
+            } else {
+                html += "TRY HARDER!";
+            }
+            html += "</h1>";
+            html += "<div>You scored " + score + " out of " + total + ".</div>";
+            document.getElementById("quiz-wrap").innerHTML = html;
+        }
+    };
+
+    window.addEventListener("load", quiz.draw);
+</script>
+<body>
+<form id="quiz-wrap"></form>
+</body>
+</html>

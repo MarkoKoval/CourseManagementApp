@@ -26,6 +26,10 @@
  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
       <style>
        .badge {
   padding: 1px 9px 2px;
@@ -73,11 +77,34 @@
 .badge-inverse:hover {
   background-color: #1a1a1a;
 }
+
+         .ii {
+    display: inline-block;
+
+
+}
     </style>
 
 </head>
 <body>
 
+<div align="center">
+<div class = "ii" style="width:520px;margin:0px auto;margin-top:30px;" id = "searchbyname">
+
+<select class="myselect myselect2" style="width:500px;" onchange="changeSelect();">
+        <option value="" disabled selected>Search course by name</option>
+         <option value="Show all" >Show all</option>
+  </select>
+</div>
+
+<div class = "ii" style="width:520px;margin:0px auto;margin-top:30px;" id = "searchbytag">
+
+<select class="myselect myselect3" style="width:500px;" onchange="changeSelect();">
+        <option value="" disabled selected>Search course by category tag name</option>
+         <option value="Show all" >Show all</option>
+  </select>
+</div>
+</div>
 <h1 id = "message" align="center"></h1>
 
 <ul id="users" >
@@ -139,9 +166,18 @@ var vm = new Vue({
               //   alert(JSON.stringify(data.courses));
                if (data.courses.length > 0) {
                    this.courses = data.courses;
+                   for(var item of this.courses){
+                       $(".myselect2").append(new Option(item.name, item.name));
+                   }
+
+                   for(var tag of data.tags){
+
+                        $(".myselect3").append(new Option(tag, tag));
+                   }
                }
                else
                {
+                   document.getElementById("searchbyname") .style.visibility='hidden'
                    document.getElementById("message").innerHTML = "There are no courses to subscribe"
                }
               // alert(JSON.stringify(data));
@@ -165,7 +201,7 @@ var vm = new Vue({
                'csrfmiddlewaretoken': '{{ csrf_token }}'
            },
            success: function (data) {
-               alert(JSON.stringify(data.courses));
+              // alert(JSON.stringify(data.courses));
                this.courses = data.courses;
               // alert(JSON.stringify(data));
               // this.tasks = data.lessons;
@@ -182,7 +218,7 @@ var vm = new Vue({
     //this.documents.splice(index, 1);
   },
   getALL(){
-        alert("gggeergergrgeger");
+       // alert("gggeergergrgeger");
   },
   seeFile:function (index) {
      // alert(this.documents[index].url);
@@ -197,6 +233,54 @@ var vm = new Vue({
       subscribe_course(coursename){
         var username_ = "{{ username  }}";
         window.location = "{% url 'create_course_subscription' 123 1234 %}".replace(/123/, username_).replace(/1234/,coursename);
+      },
+      getbytag(tag){
+      //  alert(title);
+         // alert(tag)
+        $.ajax({
+           url: '',
+           type: 'get', // This is the default though, you don't actually need to always mention it
+           data: {
+               "title":tag,
+               "tag":tag,
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+           },
+           success: function (data) {
+             //  alert(JSON.stringify(data.courses));
+               this.courses = data.courses;
+              // alert(JSON.stringify(data));
+              // this.tasks = data.lessons;
+           }.bind(this),
+           failure: function (data) {
+               alert('Got an error dude');
+               //alert(JSON.stringify(data));
+
+           }
+         });
+
+      },
+      getbytitle(title){
+      //  alert(title);
+        $.ajax({
+           url: '',
+           type: 'get', // This is the default though, you don't actually need to always mention it
+           data: {
+               "title":title,
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+           },
+           success: function (data) {
+             //  alert(JSON.stringify(data.courses));
+               this.courses = data.courses;
+              // alert(JSON.stringify(data));
+              // this.tasks = data.lessons;
+           }.bind(this),
+           failure: function (data) {
+               alert('Got an error dude');
+               //alert(JSON.stringify(data));
+
+           }
+         });
+
       },
   delete_course(id){
 
@@ -223,6 +307,28 @@ var vm = new Vue({
     }
 }
 })
+
+     $(document).ready(function() {
+        /* alert(JSON.stringify(vm.courses))
+         var items = ["Laravel ACL", "Laravel Angural JS Crud",
+         "Laravel CRUD","Laravel PDF", "C++",
+         "gLaravel ACL", "yLaravel Angural JS Crud",
+         "tLaravel CRUD","yLaravel PDF", "tC++"]
+         for (var i of items)
+         $(".myselect").append(new Option(i, i));*/
+
+     });
+      $(".myselect2").select2();
+    $('.myselect2').on('change', function() {
+   $(".myselect2").select2("close");
+    vm.getbytitle(    this.value);
+});
+
+     $(".myselect3").select2();
+    $('.myselect3').on('change', function() {
+   $(".myselect3").select2("close");
+    vm.getbytag(    this.value);
+});
 
 </script>
 

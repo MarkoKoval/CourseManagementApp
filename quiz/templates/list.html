@@ -42,8 +42,8 @@
     $(document).ready(function(){
     $('form').on('submit', function(e){
         e.preventDefault();
-        alert("hee");
-        alert($('form').get(0));
+      //  alert("hee");
+      //  alert($('form').get(0));
         var data = new FormData($('form').get(0));
         var token = '{{csrf_token}}';
          var form = $('#your_form_id');
@@ -52,7 +52,7 @@
             url: $('form').attr('action'),
             method: "POST",
             data: data,
-            success: function(data){alert("hello");},
+            success: function(data){/*alert("hello");*/},
             error: function(data){  alert("he");},
             processData: false,
             contentType: false,

@@ -140,7 +140,7 @@
 <span class="badge">Creator: {{course.author }}</span>
                 <span class="badge badge-error "> <a v-on:click = "unsubscribe(course.name)" ><font color="000000"> unsubscribe </font></a> </span>
          <span class="badge badge-info">        <a  v-on:click = "showcourselessons(course.name)"  > <font color="FFFFFF">course lessons</font> </a> </span>
-
+        <span class="badge badge-info">        <a  v-on:click = "showcoursechat(course.name)"  > <font color="FFFFFF">course chat</font> </a> </span>
         <div class="pull-right" v-for="tag in course.tags ">
             <span class="label label-default">{{ tag }}</span>
         </div>
@@ -198,6 +198,10 @@ var vm = new Vue({
        });
   },
   methods: {
+      showcoursechat(coursename){
+
+                  window.location = "{% url 'show_course_chat'  123 1234 %}".replace(/123/,coursename).replace(/1234/,"{{ username }}");
+    },
   removeElement: function (index) {
 
        $.ajax({
@@ -208,7 +212,7 @@ var vm = new Vue({
                'csrfmiddlewaretoken': '{{ csrf_token }}'
            },
            success: function (data) {
-               alert(JSON.stringify(data.courses));
+        //       alert(JSON.stringify(data.courses));
                this.courses = data.courses;
               // alert(JSON.stringify(data));
               // this.tasks = data.lessons;
@@ -266,7 +270,7 @@ var vm = new Vue({
 
       },
       showcourselessons(coursename){
-        window.location = "{% url 'show_course_lessons'  1234 %}".replace(/1234/,coursename);
+        window.location = "{% url 'show_course_lessons'  123 1234 %}".replace(/123/,coursename).replace(/1234/,"{{username}}");
       },
   delete_course(id){
 
