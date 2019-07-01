@@ -18,15 +18,11 @@ import json
 from .send_mail import send_email_for_course_subscription
 
 def enter(request):
-
-    print("hello")
-   # print(request.session.get("semail"))
     return render(request, "login.html", {"user": str(request.session.get("semail"))})
 
 
 def load_quiz(request):
     print(request.POST)
-   # print(request.session.get("num"))
     return render(request, "quiz.html")
 
 
@@ -37,42 +33,24 @@ def enter_quiz_app(request):
         user.user_email = request.GET["user_email"]
         user.save()
         return JsonResponse({"email": user.user_email})
-    print("dddd")
-    print(request.POST)
     user = None
     created = None
     try:
-        '''     user_email = request.POST["email"], '''
         user,created = User.objects.get_or_create(name=request.POST["nickname"],password=request.POST["password"],
                                              user_status = request.POST["status"])
     except Exception as E:
          print(E)
          return HttpResponseRedirect(reverse('enter'))
-    print("ggg")
-
-    print(created)
-    print(user)
     if created:
         return render(request, "quiz.html", {"user": user})
     else:
         if user != None:
             if user.password == request.POST["password"]:
-                print("zbs")
                 return render(request, "quiz.html",  {"user":user})
             else:
-                print("not zbs")
-
-                temp = ["hihi"]
-               # return render(request, "login.html")
-              #  request.session['semail'] =[ 'hrthrthrtirfan.sssit@gmail.com']
                 return HttpResponseRedirect(reverse('enter'))
-
         else:
-
-         #   request.session['semail'] = ['irfan.sssit@gmail.comhthrthrthr']
             return HttpResponseRedirect(reverse('enter'))
-
-            #return render(request, "login.html",  {"user":user})
 
 
 def load_quiz_info(request):
@@ -404,7 +382,7 @@ def delete_course(request,id):
 
 def update_course(request,id):
     return render(request, "my-created-courses.html",{})
-
+#create_course_lessons
 def edit_course_content(request,coursename):
     print("haha")
     print(request.GET.get('title'))

@@ -29,7 +29,7 @@
 </style>
 </head>
 <body>
-    <p> Назва курсу {{ coursename}} Назва уроку {{ lessonname}}  Користувач  {{ username}} <p>
+    <!--<p> Назва курсу {{ coursename}} Назва уроку {{ lessonname}}  Користувач  {{ username}} <p> --!>
 
 
 
@@ -37,7 +37,7 @@
 
         <!--action="{ url "tyy"  coursename lessonname username }"-->
         <!-- Upload form. Note enctype attribute! -->
-        <form name = "form" id = "your_form_id"  method="post" enctype="multipart/form-data">
+        <form  name = "form" id = "your_form_id"  method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <p>{{ form.non_field_errors }}</p>
 
